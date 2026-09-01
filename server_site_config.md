@@ -53,7 +53,7 @@ sudo systemctl start prometheus
 sudo systemctl enable prometheus
 
 ```
-# အဆင့် ၂ - PGrafana ကို တပ်ဆင်ခြင်း (Install Grafana)
+# အဆင့် ၂ - Grafana ကို တပ်ဆင်ခြင်း (Install Grafana)
 
 ```bash
 # ၁။ လိုအပ်သော Packages များကို ထည့်သွင်းပါ:
