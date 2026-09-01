@@ -80,4 +80,11 @@ Default Username: admin
 Default Password: admin (ပထမအကြိမ် ဝင်တဲ့အခါ Password အသစ်ပြောင်းခိုင်းပါမယ်)
 
 ```
-
+# အဆင့် ၃ - Prometheus နှင့် Grafana ချိတ်ဆက်ခြင်း (Data Source Connection)
+```bash
+၁။ Grafana Dashboard ထဲသို့ ဝင်ပါ။
+၂။ ဘယ်ဘက် မီနူးက Connections -> Data sources ကို နှိပ်ပါ။
+၃။ Add data source ကို နှိပ်ပြီး Prometheus ကို ရွေးပါ။
+၄။ Connection URL နေရာတွင် http://localhost:9090 (သို့မဟုတ် monitoring server IP) ကို ထည့်ပါ။
+၅။ အောက်ဆုံးနားက Save & test ကို နှိပ်ပါ။ "Data source is working" ဆိုတဲ့ မက်ဆေ့ခ်ျ ပေါ်လာရင် အောင်မြင်ပါပြီ။
+```
