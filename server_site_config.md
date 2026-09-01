@@ -52,6 +52,32 @@ sudo systemctl daemon-reload
 sudo systemctl start prometheus
 sudo systemctl enable prometheus
 
+```
+# အဆင့် ၂ - PGrafana ကို တပ်ဆင်ခြင်း (Install Grafana)
 
+```bash
+# ၁။ လိုအပ်သော Packages များကို ထည့်သွင်းပါ:
+sudo apt-get update
+sudo apt-get install -y apt-transport-https software-properties-common wget
+
+# ၂။ Grafana GPG Key နှင့် Repository ကို ထည့်ပါ:
+wget -q -O - https://packages.grafana.com/gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/grafana.gpg
+echo "deb [signed-by=/usr/share/keyrings/grafana.gpg] https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+# ၃။ Grafana ကို Install လုပ်ပါ:
+sudo apt-get update
+sudo apt-get install -y grafana
+
+# ၄။ Grafana Service ကို Start လုပ်ပြီး Enable ပေးပါ:
+sudo systemctl daemon-reload
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server
+
+စစ်ဆေးရန်: Browser ကနေ http://<monitoring-server-ip>:3000 ကို ဝင်ကြည့်ပါ။
+
+Default Username: admin
+
+Default Password: admin (ပထမအကြိမ် ဝင်တဲ့အခါ Password အသစ်ပြောင်းခိုင်းပါမယ်)
 
 ```
+
