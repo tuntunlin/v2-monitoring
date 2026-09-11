@@ -1,0 +1,23 @@
+  165  wget https://github.com/burningalchemist/sql_exporter/releases/download/0.24.8/sql_exporter-0.24.8.linux-amd64.tar.gz
+  166  tar -xvf sql_exporter-0.24.8.linux-amd64.tar.gz
+  167  sudo mv sql_exporter-0.24.8.linux-amd64/sql_exporter /usr/local/bin/
+  168  sudo nano /etc/sql_exporter.yml
+  169  sudo nano /etc/systemd/system/sql_exporter.service
+  170  sudo systemctl daemon-reload
+  171  sudo systemctl enable --now sql_exporter
+  172  sudo systemctl status sql_exporter
+  173  sudo /usr/local/bin/sql_exporter -config.file=/etc/sql_exporter.yml
+  174  sudo systemctl status sql_exporter
+  175  sudo nano /etc/sql_exporter.yml
+  176  sudo systemctl restart sql_exporter
+  177  sudo systemctl status sql_exporter
+  178  sudo nano /etc/sql_exporter.ymlcd
+  179  s
+  180  ls
+  181  sudo cp sql_exporter-0.24.8.linux-amd64/*.collector.yml /etc/
+  182  sudo nano /etc/sql_exporter.yml
+  183  sudo systemctl restart sql_exporter
+  184  sudo systemctl status sql_exporter
+  185  curl http://localhost:9399/metrics
+  186  sudo systemctl status sql_exporter
+  187  curl http://localhost:9399/metrics
