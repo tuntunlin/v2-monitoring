@@ -21,3 +21,32 @@
   185  curl http://localhost:9399/metrics
   186  sudo systemctl status sql_exporter
   187  curl http://localhost:9399/metrics
+
+
+
+ sudo nano /etc/sql_exporter.yml
+global:
+  scrape_timeout: 10s
+
+target:
+  data_source_name: 'sqlserver://prom_monitor:xxxxxxxxxxx@localhost:1433'
+  # အောက်ပါ စာကြောင်းကို ထပ်ဖြည့်ပါ
+  collectors: [mssql_standard]
+
+# အောက်ပါ စာကြောင်း ၂ ကြောင်းကို ဖိုင်အောက်ဆုံးတွင် ထပ်ဖြည့်ပါ
+collector_files:
+  - "/etc/*.collector.yml"
+
+
+sudo nano /etc/systemd/system/sql_exporter.service
+[Unit]
+Description=SQL Server Exporter for Prometheus
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/local/bin/sql_exporter -config.file=/etc/sql_exporter.yml
+
+[Install]
+WantedBy=multi-user.target
