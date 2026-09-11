@@ -1,0 +1,70 @@
+၁။ Node Exporter တပ်ဆင်ခြင်း (VM ၃ လုံးစလုံးတွင် လုပ်ရန်)
+Linux Terminal မှတစ်ဆင့် အောက်ပါ Command များကို တစ်ကြောင်းချင်းစီ Run ပြီး Node Exporter ကို Systemd Service အဖြစ် ထည့်သွင်းပါ—
+
+Bash
+# ၁။ Download ဆွဲပြီး ဖြည်ရန်
+wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
+tar -xvf node_exporter-1.8.2.linux-amd64.tar.gz
+sudo mv node_exporter-1.8.2.linux-amd64/node_exporter /usr/local/bin/
+
+# ၂။ Systemd user ဆောက်ရန်
+sudo useradd -rs /bin/false node_exporter
+
+# ၃။ Service ဖိုင် ဆောက်ရန်
+sudo nano /etc/systemd/system/node_exporter.service
+
+ဖိုင်ထဲတွင် အောက်ပါစာကြောင်းများကို ထည့်ပြီး Save (Ctrl + O, Enter, Ctrl + X) လုပ်ပါ—
+
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+
+ထို့နောက် Service ကို စတင်ပါ—
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now node_exporter
+
+၂။ Prometheus ဘက်မှ Data လှမ်းဆွဲရန် ပြင်ဆင်ခြင်း
+Prometheus Server ရှိရာ စက်၏ prometheus.yml ဖိုင်ထဲတွင် ယခု VM သုံးလုံး၏ IP နှင့် Port 9100 ကို scrape_configs အောက်၌ သွားထပ်ဖြည့်ပေးပါ—
+
+၁။ prometheus.yml ဖိုင်ကို ဖွင့်ရန်
+Prometheus VM ထဲသို့ ဝင်၍ configuration ဖိုင်ကို ဖွင့်ပါ (များသောအားဖြင့် /etc/prometheus/prometheus.yml တွင် ရှိတတ်ပါသည်)။
+
+Bash
+sudo nano /etc/prometheus/prometheus.yml
+၂။ Scrape Configs ထည့်သွင်းခြင်း
+scrape_configs:
+  # (၁) SQL Server ကျန်းမာရေးအတွက် (MSSQL Exporter)
+  - job_name: 'mssql_ag_cluster'
+    scrape_interval: 15s
+    static_configs:
+      - targets: 
+        - '172.16.41.98:9399'
+        - '172.16.41.99:9399'
+        - '172.16.41.100:9399'
+
+  # (၂) VM ၏ CPU/RAM/Disk ကျန်းမာရေးအတွက် (Node Exporter)
+  - job_name: 'linux_vms_health'
+    scrape_interval: 15s
+    static_configs:
+      - targets: 
+        - '172.16.41.98:9100'
+        - '172.16.41.99:9100'
+        - '172.16.41.100:9100'
+
+၃။ Prometheus ကို Restart ချခြင်း
+Configuration အသစ် အလုပ်လုပ်သွားစေရန် Prometheus Service ကို Restart ချပေးပါ—
+
+Bash
+sudo systemctl restart prometheus
+
+
